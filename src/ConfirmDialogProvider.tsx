@@ -1,12 +1,12 @@
 import React from 'react';
-import { ConfirmDialog } from 'ConfirmDialog';
+import { ConfirmDialog } from './ConfirmDialog';
 import {
   ConfirmOptions,
   FinalOptions,
   GlobalOptions,
   HandleConfirm,
-} from 'types';
-import { handleOverrideOptions } from 'defaultOptions';
+} from './types';
+import { handleOverrideOptions } from './defaultOptions';
 
 export const ConfirmContext = React.createContext<HandleConfirm | null>(null);
 
@@ -14,7 +14,9 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
   children,
   ...globalOptoins
 }) => {
-  const [promise, setPromise] = React.useState([() => {}, () => {}]);
+  const [promise, setPromise] = React.useState<[() => void, () => void] | []>(
+    []
+  );
   const [resolveDialog, rejectDialog] = promise;
 
   const [finalOptions, setFinalOptions] = React.useState<FinalOptions>({});

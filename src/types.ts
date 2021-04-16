@@ -7,7 +7,7 @@ import {
   DialogActionsProps,
   DialogContentProps,
 } from '@material-ui/core';
-import { handleOverrideOptions } from 'defaultOptions';
+import { handleOverrideOptions } from './defaultOptions';
 
 export type GlobalOptions = {
   confirmButtonText?: string;

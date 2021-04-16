@@ -8,9 +8,9 @@ import {
   DialogContentText,
   TextField,
 } from '@material-ui/core';
-import { LoadingButton } from 'LoadingButton';
-import { DialogProps } from 'types';
-import { defaultConfirmOptions, defaultGlobalOptions } from 'defaultOptions';
+import { LoadingButton } from './LoadingButton';
+import { DialogProps } from './types';
+import { defaultConfirmOptions, defaultGlobalOptions } from './defaultOptions';
 
 const initialConfirmInputState = {
   value: '',

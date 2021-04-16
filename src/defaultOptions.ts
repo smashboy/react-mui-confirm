@@ -1,4 +1,4 @@
-import { GlobalOptions, ConfirmOptions } from 'types';
+import { GlobalOptions, ConfirmOptions } from './types';
 
 export const defaultGlobalOptions: GlobalOptions = {
   confirmButtonText: 'Confirm',
