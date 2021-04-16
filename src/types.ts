@@ -25,7 +25,7 @@ export type GlobalOptions = {
 
 export type ConfirmOptions = GlobalOptions & {
   title?: string;
-  description?: string;
+  description?: React.ReactNode;
   confirmText?: string;
   // dialogContent?: TODO
   onConfirm?: () => Promise<void> | void;

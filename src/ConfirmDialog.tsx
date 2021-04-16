@@ -28,10 +28,14 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
     initialConfirmInputState
   );
 
-  const handleCancelOnClose = (handler: () => void) => {
+  const isConfirmDisabled = Boolean(
+    !confirmInput.isMatched && finalOptions?.confirmText
+  );
+
+  const handleCancelOnClose = React.useCallback((handler: () => void) => {
     handler();
     setConfirmInput(initialConfirmInputState);
-  };
+  }, []);
 
   const handleConfirmInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.currentTarget.value;
@@ -41,6 +45,11 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
       isMatched: finalOptions?.confirmText === inputValue,
     });
   };
+
+  const handleConfirm = React.useCallback(() => {
+    if (isConfirmDisabled) return;
+    onConfirm();
+  }, [isConfirmDisabled, onConfirm]);
 
   return (
     <Dialog
@@ -76,10 +85,8 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         </Button>
         <LoadingButton
           {...finalOptions.confirmButtonProps}
-          onClick={onConfirm}
-          // disabled={confirmText ? confirmInput !== confirmText : false}
-          // className={classes.dangerBtn}
-          // onClick={handleSubmit.execute}
+          onClick={handleConfirm}
+          disabled={isConfirmDisabled}
           // isLoading={handleSubmit.loading}
         >
           {finalOptions?.confirmButtonText ||

@@ -14,42 +14,45 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
   children,
   ...globalOptoins
 }) => {
-  const [promise, setPromise] = React.useState<[() => void, () => void] | []>(
-    []
-  );
-  const [resolveDialog, rejectDialog] = promise;
+  const [promise, setPromise] = React.useState<{
+    resolve?: (value?: any) => void;
+    reject?: () => void;
+  }>({});
 
   const [finalOptions, setFinalOptions] = React.useState<FinalOptions>({});
 
   const confirm = React.useCallback((confirmOptions?: ConfirmOptions) => {
     return new Promise((resolve, reject) => {
       setFinalOptions(handleOverrideOptions(globalOptoins, confirmOptions));
-      setPromise([resolve, reject]);
+      setPromise({ resolve, reject });
     });
   }, []);
 
   const handleClose = React.useCallback(() => {
-    setPromise([]);
-    setFinalOptions({});
+    setPromise({});
   }, []);
 
   const handleConfirm = React.useCallback(() => {
     finalOptions?.onConfirm?.();
-    resolveDialog();
+    promise?.resolve?.();
     handleClose();
-  }, [resolveDialog, finalOptions]);
+  }, [promise, finalOptions]);
 
   const handleCancel = React.useCallback(() => {
-    if (finalOptions?.disableRejectOnCancel) return resolveDialog();
-    rejectDialog();
+    if (finalOptions?.disableRejectOnCancel) {
+      promise?.resolve?.();
+      handleClose();
+      return;
+    }
+    promise?.reject?.();
     handleClose();
-  }, [rejectDialog, resolveDialog, finalOptions]);
+  }, [promise, finalOptions]);
 
   return (
     <ConfirmContext.Provider value={confirm}>
       {children}
       <ConfirmDialog
-        show={promise.length === 2}
+        show={Object.keys(promise).length === 2}
         onCancel={handleCancel}
         onClose={handleClose}
         onConfirm={handleConfirm}
