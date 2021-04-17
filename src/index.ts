@@ -1,3 +1,8 @@
 export { ConfirmDialogProvider } from './ConfirmDialogProvider';
-export { useConfirmDialog, useTest } from './useConfirmDialog';
-export { GlobalOptions, ConfirmOptions, HandleConfirm } from './types';
+export { useConfirmDialog } from './useConfirmDialog';
+export {
+  GlobalOptions,
+  ConfirmOptions,
+  HandleConfirm,
+  UseTimerProps,
+} from './types';

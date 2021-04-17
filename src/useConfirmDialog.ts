@@ -11,9 +11,3 @@ export const useConfirmDialog = () => {
 
   return confirm;
 };
-
-export const useTest = () => {
-  const [state] = React.useState(false);
-
-  return state;
-};

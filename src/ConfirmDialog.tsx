@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
+  LinearProgress,
 } from '@material-ui/core';
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
@@ -19,6 +20,7 @@ const initialConfirmInputState = {
 
 export const ConfirmDialog: React.FC<DialogProps> = ({
   show,
+  progress,
   onClose,
   onCancel,
   onConfirm,
@@ -53,10 +55,17 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
 
   return (
     <Dialog
+      {...finalOptions.dialogProps}
       open={show}
       onClose={() => handleCancelOnClose(onClose)}
-      {...finalOptions.dialogProps}
     >
+      {progress > 0 && (
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          {...finalOptions.timerProgressProps}
+        />
+      )}
       <DialogTitle {...finalOptions.dialogTitleProps}>
         {finalOptions?.title || defaultConfirmOptions.title}
       </DialogTitle>

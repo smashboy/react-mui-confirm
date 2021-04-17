@@ -27,6 +27,19 @@ const Home = () => {
         color: 'primary',
         size: 'small',
       },
+      cancelButtonProps: {
+        color: 'default',
+      },
+    });
+
+  const handleConfirmTimer = () =>
+    confirm({
+      title: 'Auto close alert',
+      timer: 10000,
+      dialogProps: {
+        maxWidth: 'sm',
+        fullWidth: true,
+      },
     });
 
   return (
@@ -40,6 +53,9 @@ const Home = () => {
       </Button>
       <Button onClick={handleConfirmText} variant="contained">
         Confirm input
+      </Button>
+      <Button onClick={handleConfirmTimer} variant="contained">
+        Auto close timer
       </Button>
     </div>
   );
