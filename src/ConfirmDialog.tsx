@@ -12,6 +12,7 @@ import {
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
 import { defaultConfirmOptions, defaultGlobalOptions } from './defaultOptions';
+import { useAsync } from './useAsync';
 
 const initialConfirmInputState = {
   value: '',
@@ -30,6 +31,11 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
     initialConfirmInputState
   );
 
+  const confirm = useAsync(async () => {
+    if (isConfirmDisabled) return;
+    await onConfirm();
+  });
+
   const isConfirmDisabled = Boolean(
     !confirmInput.isMatched && finalOptions?.confirmText
   );
@@ -47,11 +53,6 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
       isMatched: finalOptions?.confirmText === inputValue,
     });
   };
-
-  const handleConfirm = React.useCallback(() => {
-    if (isConfirmDisabled) return;
-    onConfirm();
-  }, [isConfirmDisabled, onConfirm]);
 
   return (
     <Dialog
@@ -94,9 +95,9 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         </Button>
         <LoadingButton
           {...finalOptions.confirmButtonProps}
-          onClick={handleConfirm}
+          onClick={confirm.execute}
           disabled={isConfirmDisabled}
-          // isLoading={handleSubmit.loading}
+          isLoading={confirm.loading}
         >
           {finalOptions?.confirmButtonText ||
             defaultGlobalOptions.confirmButtonText}

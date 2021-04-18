@@ -47,20 +47,27 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
     setTimerProgress(0);
   }, []);
 
-  const handleConfirm = React.useCallback(() => {
-    finalOptions?.onConfirm?.();
-    promise?.resolve?.();
-    handleClose();
+  const handleConfirm = React.useCallback(async () => {
+    try {
+      await finalOptions?.onConfirm?.();
+      promise?.resolve?.();
+    } catch (error) {
+      promise?.reject?.();
+    } finally {
+      if (!finalOptions?.confirmText) {
+        handleClose();
+      }
+    }
   }, [promise, finalOptions]);
 
   const handleCancel = React.useCallback(() => {
     if (finalOptions?.disableRejectOnCancel) {
-      promise?.resolve?.();
       handleClose();
+      promise?.resolve?.();
       return;
     }
-    promise?.reject?.();
     handleClose();
+    promise?.reject?.();
   }, [promise, finalOptions]);
 
   return (

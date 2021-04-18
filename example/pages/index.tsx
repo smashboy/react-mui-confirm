@@ -42,6 +42,40 @@ const Home = () => {
       },
     });
 
+  const simulateFetch = (rejectFetch?: boolean) =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        rejectFetch ? reject() : resolve('thingy');
+      }, 2000);
+    });
+
+  const handleFetchOnConfirm = () =>
+    confirm({
+      title: 'Are you sure you want to fetch this thingy?',
+      onConfirm: async () => {
+        await simulateFetch();
+      },
+      cancelButtonProps: {
+        color: 'default',
+      },
+    });
+
+  const simulateRejectedFetch = async () => {
+    try {
+      await confirm({
+        title: 'Are you sure you want to fetch this thingy?',
+        onConfirm: async () => {
+          await simulateFetch(true);
+        },
+        cancelButtonProps: {
+          color: 'default',
+        },
+      });
+    } catch (error) {
+      console.error('ERROR HANDLER', error);
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -56,6 +90,12 @@ const Home = () => {
       </Button>
       <Button onClick={handleConfirmTimer} variant="contained">
         Auto close timer
+      </Button>
+      <Button onClick={handleFetchOnConfirm} variant="contained">
+        Confirm fetch
+      </Button>
+      <Button onClick={simulateRejectedFetch} variant="contained">
+        Handle fetch error
       </Button>
     </div>
   );
