@@ -18,7 +18,7 @@ export type GlobalOptions = {
   dialogTitleProps?: Partial<DialogTitleProps>;
   dialogContentProps?: Partial<DialogContentProps>;
   dialogContentTextProps?: Partial<DialogContentTextProps>;
-  dialogActoinsProps?: Partial<DialogActionsProps>;
+  dialogActionsProps?: Partial<DialogActionsProps>;
   confirmTextFieldProps?: Partial<TextFieldProps>;
   timerProgressProps?: Partial<LinearProgressProps>;
   confirmButtonProps?: Partial<ButtonProps>;
@@ -26,7 +26,7 @@ export type GlobalOptions = {
 };
 
 export type ConfirmOptions = GlobalOptions & {
-  title?: string;
+  title: string;
   description?: React.ReactNode;
   confirmText?: string;
   timer?: number;
@@ -34,7 +34,7 @@ export type ConfirmOptions = GlobalOptions & {
   onConfirm?: () => Promise<void> | void;
 };
 
-export type FinalOptions = ReturnType<typeof handleOverrideOptions>;
+export type FinalOptions = Partial<GlobalOptions & ConfirmOptions>;
 
 export type HandleConfirm = (options?: ConfirmOptions) => void;
 

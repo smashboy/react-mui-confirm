@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
-import { defaultConfirmOptions, defaultGlobalOptions } from './defaultOptions';
+import { defaultGlobalOptions } from './defaultOptions';
 import { useAsync } from './useAsync';
 
 const initialConfirmInputState = {
@@ -68,7 +68,7 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         />
       )}
       <DialogTitle {...finalOptions.dialogTitleProps}>
-        {finalOptions?.title || defaultConfirmOptions.title}
+        {finalOptions.title!}
       </DialogTitle>
       <DialogContent {...finalOptions.dialogContentProps}>
         {finalOptions?.description && (
@@ -85,7 +85,7 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
           />
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions {...finalOptions.dialogActionsProps}>
         <Button
           {...finalOptions.cancelButtonProps}
           onClick={() => handleCancelOnClose(onCancel)}

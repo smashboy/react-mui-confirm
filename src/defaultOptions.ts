@@ -1,4 +1,4 @@
-import { GlobalOptions, ConfirmOptions } from './types';
+import { GlobalOptions, ConfirmOptions, FinalOptions } from './types';
 
 export const defaultGlobalOptions: GlobalOptions = {
   confirmButtonText: 'Confirm',
@@ -12,16 +12,11 @@ export const defaultGlobalOptions: GlobalOptions = {
   },
 };
 
-export const defaultConfirmOptions: ConfirmOptions = {
-  title: 'Are you sure?',
-};
-
 export const handleOverrideOptions = (
   globalOptions?: GlobalOptions,
   confirmOptions?: ConfirmOptions
-) => ({
+): FinalOptions => ({
   ...defaultGlobalOptions,
   ...globalOptions,
-  ...defaultConfirmOptions,
   ...confirmOptions,
 });
