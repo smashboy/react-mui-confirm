@@ -22,9 +22,13 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
 
   const [finalOptions, setFinalOptions] = React.useState<FinalOptions>({});
   const [timerProgress, setTimerProgress] = React.useState(0);
+  const [timerIsRunning, setTimerIsRunning] = React.useState(false);
 
   const timer = useTimer({
-    onTimeEnd: () => handleCancel(),
+    onTimeEnd: () => {
+      console.log('TIME END');
+      handleCancel();
+    },
     onTimeTick: timeLeft =>
       setTimerProgress((100 * timeLeft) / finalOptions.timer!),
   });
@@ -36,36 +40,43 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
       setPromise({ resolve, reject });
 
       if (finalOptions?.timer) {
+        setTimerIsRunning(true);
         timer.start(finalOptions.timer);
       }
     });
   }, []);
 
+  const handleStopTimer = React.useCallback(() => {
+    if (timerIsRunning) {
+      setTimerIsRunning(false);
+      setTimerProgress(0);
+      timer.stop();
+    }
+  }, [timerIsRunning]);
+
   const handleClose = React.useCallback(() => {
     setPromise({});
-    timer.stop();
-    setTimerProgress(0);
   }, []);
 
   const handleConfirm = React.useCallback(async () => {
     try {
+      handleStopTimer();
+
       await finalOptions?.onConfirm?.();
       promise?.resolve?.();
+      handleClose();
     } catch (error) {
       promise?.reject?.();
-    } finally {
       if (!finalOptions?.confirmText) {
         handleClose();
       }
     }
-  }, [promise, finalOptions]);
+  }, [promise, finalOptions, timerIsRunning]);
 
   const handleCancel = React.useCallback(() => {
-    if (finalOptions?.disableRejectOnCancel) {
-      handleClose();
-      promise?.resolve?.();
-      return;
-    }
+    handleStopTimer();
+    handleClose();
+    if (finalOptions?.disableRejectOnCancel) return promise?.resolve?.();
     handleClose();
     promise?.reject?.();
   }, [promise, finalOptions]);
