@@ -1,6 +1,25 @@
 {
   "version": "0.1.0",
   "license": "MIT",
+  "private": false,
+  "author": {
+    "name": "Serhii Chaban",
+    "url": "https://github.com/smashboy"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "material-ui",
+    "confirm",
+    "confirmation-dialog"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smashboy/react-mui-confirm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smashboy/react-mui-confirm/issues"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -33,7 +52,6 @@
     "trailingComma": "es5"
   },
   "name": "react-mui-confirm",
-  "author": "Default",
   "module": "dist/react-mui-confirm.esm.js",
   "devDependencies": {
     "@material-ui/core": "^4.11.3",
