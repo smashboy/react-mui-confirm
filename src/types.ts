@@ -8,7 +8,6 @@ import {
   DialogContentProps,
   LinearProgressProps,
 } from '@material-ui/core';
-import { handleOverrideOptions } from './defaultOptions';
 
 export type GlobalOptions = {
   confirmButtonText?: string;

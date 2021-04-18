@@ -53,10 +53,11 @@ export const useTimer = (props?: UseTimerProps) => {
   }, [timer]);
 
   React.useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | null = null;
 
     if (timer.status === 'RUNNING') {
       const { startTime, ...otherProps } = timer;
+      // @ts-ignore
       interval = setInterval(() => {
         setTimer({
           ...otherProps,
