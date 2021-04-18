@@ -4,6 +4,8 @@
   
 React Hooks based confirm dialog component built for [@material-ui/core](https://material-ui.com/).
 
+</div>
+
 ## Examples
 
 ## Getting Started
