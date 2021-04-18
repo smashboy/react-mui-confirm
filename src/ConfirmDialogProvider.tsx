@@ -25,10 +25,7 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
   const [timerIsRunning, setTimerIsRunning] = React.useState(false);
 
   const timer = useTimer({
-    onTimeEnd: () => {
-      console.log('TIME END');
-      handleCancel();
-    },
+    onTimeEnd: () => handleCancel(),
     onTimeTick: timeLeft =>
       setTimerProgress((100 * timeLeft) / finalOptions.timer!),
   });
