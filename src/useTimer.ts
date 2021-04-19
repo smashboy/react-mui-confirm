@@ -57,8 +57,7 @@ export const useTimer = (props?: UseTimerProps) => {
 
     if (timer.status === 'RUNNING') {
       const { startTime, ...otherProps } = timer;
-      // @ts-ignore
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         setTimer({
           ...otherProps,
           startTime,
@@ -66,11 +65,11 @@ export const useTimer = (props?: UseTimerProps) => {
         });
       }, useTimerConfig.interval);
     } else if (timer.status === 'IDLE' && interval) {
-      clearInterval(interval);
+      window.clearInterval(interval);
     }
 
     return () => {
-      if (interval) clearInterval(interval);
+      if (interval) window.clearInterval(interval);
     };
   }, [timer]);
 
