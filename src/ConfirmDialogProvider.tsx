@@ -52,15 +52,15 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
   }, [timerIsRunning]);
 
   const handleClose = React.useCallback(() => {
+    promise?.resolve?.();
     setPromise({});
-  }, []);
+  }, [promise]);
 
   const handleConfirm = React.useCallback(async () => {
     try {
       handleStopTimer();
 
       await finalOptions?.onConfirm?.();
-      promise?.resolve?.();
       handleClose();
     } catch (error) {
       promise?.reject?.();
@@ -72,15 +72,20 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
 
   const handleCancel = React.useCallback(() => {
     handleStopTimer();
-    handleClose();
-    if (finalOptions?.disableRejectOnCancel) return promise?.resolve?.();
-    handleClose();
+    if (finalOptions?.disableRejectOnCancel) {
+      promise?.resolve?.();
+      setPromise({});
+      return;
+    }
     promise?.reject?.();
+    setPromise({});
   }, [promise, finalOptions]);
 
   return (
-    <ConfirmContext.Provider value={confirm}>
-      {children}
+    <React.Fragment>
+      <ConfirmContext.Provider value={confirm}>
+        {children}
+      </ConfirmContext.Provider>
       <ConfirmDialog
         show={Object.keys(promise).length === 2}
         progress={timerProgress}
@@ -89,6 +94,6 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
         onConfirm={handleConfirm}
         finalOptions={finalOptions}
       />
-    </ConfirmContext.Provider>
+    </React.Fragment>
   );
 };
