@@ -1,20 +1,12 @@
 import React from 'react';
 import { ConfirmDialog } from './ConfirmDialog';
-import {
-  ConfirmOptions,
-  FinalOptions,
-  GlobalOptions,
-  HandleConfirm,
-} from './types';
+import { ConfirmOptions, FinalOptions, GlobalOptions, HandleConfirm } from './types';
 import { handleOverrideOptions } from './defaultOptions';
 import { useTimer } from './useTimer';
 
 export const ConfirmContext = React.createContext<HandleConfirm | null>(null);
 
-export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
-  children,
-  ...globalOptoins
-}) => {
+export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({ children, ...globalOptoins }) => {
   const [promise, setPromise] = React.useState<{
     resolve?: (value?: any) => void;
     reject?: () => void;
@@ -26,8 +18,7 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
 
   const timer = useTimer({
     onTimeEnd: () => handleCancel(),
-    onTimeTick: timeLeft =>
-      setTimerProgress((100 * timeLeft) / finalOptions.timer!),
+    onTimeTick: timeLeft => setTimerProgress((100 * timeLeft) / finalOptions.timer!),
   });
 
   const confirm = React.useCallback((confirmOptions?: ConfirmOptions) => {
@@ -51,41 +42,48 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({
     }
   }, [timerIsRunning]);
 
-  const handleClose = React.useCallback(() => {
+  const handleResolveAndClear = React.useCallback(() => {
     promise?.resolve?.();
     setPromise({});
   }, [promise]);
+
+  const handleRejectAndClear = React.useCallback(
+    (disableClose?: boolean) => {
+      promise?.reject?.();
+      if (disableClose) return;
+      setPromise({});
+    },
+    [promise]
+  );
+
+  const handleClose = React.useCallback(() => {
+    handleStopTimer();
+    handleResolveAndClear();
+  }, [handleResolveAndClear, handleStopTimer]);
 
   const handleConfirm = React.useCallback(async () => {
     try {
       handleStopTimer();
 
       await finalOptions?.onConfirm?.();
-      handleClose();
+      handleResolveAndClear();
     } catch (error) {
-      promise?.reject?.();
-      if (!finalOptions?.confirmText) {
-        handleClose();
-      }
+      handleRejectAndClear(Boolean(finalOptions?.confirmText));
     }
-  }, [promise, finalOptions, timerIsRunning]);
+  }, [handleResolveAndClear, handleRejectAndClear, finalOptions, timerIsRunning, handleStopTimer]);
 
   const handleCancel = React.useCallback(() => {
     handleStopTimer();
     if (finalOptions?.disableRejectOnCancel) {
-      promise?.resolve?.();
-      setPromise({});
+      handleResolveAndClear();
       return;
     }
-    promise?.reject?.();
-    setPromise({});
-  }, [promise, finalOptions]);
+    handleRejectAndClear();
+  }, [handleResolveAndClear, handleRejectAndClear, finalOptions, handleStopTimer]);
 
   return (
     <React.Fragment>
-      <ConfirmContext.Provider value={confirm}>
-        {children}
-      </ConfirmContext.Provider>
+      <ConfirmContext.Provider value={confirm}>{children}</ConfirmContext.Provider>
       <ConfirmDialog
         show={Object.keys(promise).length === 2}
         progress={timerProgress}
