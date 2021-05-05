@@ -43,7 +43,7 @@ export type DialogProps = {
   progress: number;
   onCancel: () => void;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => Promise<void>;
 };
 
 export type UseTimerProps = {

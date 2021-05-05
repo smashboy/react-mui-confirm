@@ -12,7 +12,6 @@ import {
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
 import { defaultGlobalOptions } from './defaultOptions';
-import { useAsync } from './useAsync';
 
 const initialConfirmInputState = {
   value: '',
@@ -28,13 +27,21 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
   finalOptions,
 }) => {
   const [confirmInput, setConfirmInput] = React.useState(initialConfirmInputState);
-
-  const confirm = useAsync(async () => {
-    if (isConfirmDisabled) return;
-    await onConfirm();
-  });
+  const [loading, setLoading] = React.useState(false);
 
   const isConfirmDisabled = Boolean(!confirmInput.isMatched && finalOptions?.confirmText);
+
+  const handleConfrirm = React.useCallback(async () => {
+    try {
+      if (isConfirmDisabled) return;
+      setLoading(true);
+      await onConfirm();
+      setConfirmInput(initialConfirmInputState);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }, [isConfirmDisabled, onConfirm]);
 
   const handleCancelOnClose = React.useCallback((handler: () => void) => {
     handler();
@@ -81,9 +88,9 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         </Button>
         <LoadingButton
           {...finalOptions.confirmButtonProps}
-          onClick={confirm.execute}
+          onClick={handleConfrirm}
           disabled={isConfirmDisabled}
-          isLoading={confirm.loading}
+          isLoading={loading}
         >
           {finalOptions?.confirmButtonText || defaultGlobalOptions.confirmButtonText}
         </LoadingButton>
