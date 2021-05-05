@@ -43,8 +43,7 @@ export const useTimer = (props?: UseTimerProps) => {
   );
 
   React.useEffect(() => {
-    if (timer.status === 'RUNNING')
-      props?.onTimeTick?.(timer.timer - timer.ellapsedTime);
+    if (timer.status === 'RUNNING') props?.onTimeTick?.(timer.timer - timer.ellapsedTime);
 
     if (timer.ellapsedTime >= timer.timer && timer.status === 'RUNNING') {
       handleStopTimer();

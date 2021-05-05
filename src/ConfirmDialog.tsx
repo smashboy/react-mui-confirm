@@ -12,7 +12,6 @@ import {
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
 import { defaultGlobalOptions } from './defaultOptions';
-import { useAsync } from './useAsync';
 
 const initialConfirmInputState = {
   value: '',
@@ -27,18 +26,22 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
   onConfirm,
   finalOptions,
 }) => {
-  const [confirmInput, setConfirmInput] = React.useState(
-    initialConfirmInputState
-  );
+  const [confirmInput, setConfirmInput] = React.useState(initialConfirmInputState);
+  const [loading, setLoading] = React.useState(false);
 
-  const confirm = useAsync(async () => {
-    if (isConfirmDisabled) return;
-    await onConfirm();
-  });
+  const isConfirmDisabled = Boolean(!confirmInput.isMatched && finalOptions?.confirmText);
 
-  const isConfirmDisabled = Boolean(
-    !confirmInput.isMatched && finalOptions?.confirmText
-  );
+  const handleConfrirm = React.useCallback(async () => {
+    try {
+      if (isConfirmDisabled) return;
+      setLoading(true);
+      await onConfirm();
+      setConfirmInput(initialConfirmInputState);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }, [isConfirmDisabled, onConfirm]);
 
   const handleCancelOnClose = React.useCallback((handler: () => void) => {
     handler();
@@ -55,11 +58,7 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
   };
 
   return (
-    <Dialog
-      {...finalOptions.dialogProps}
-      open={show}
-      onClose={() => handleCancelOnClose(onClose)}
-    >
+    <Dialog {...finalOptions.dialogProps} open={show} onClose={() => handleCancelOnClose(onClose)}>
       {progress > 0 && (
         <LinearProgress
           variant="determinate"
@@ -67,9 +66,7 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
           {...finalOptions.timerProgressProps}
         />
       )}
-      <DialogTitle {...finalOptions.dialogTitleProps}>
-        {finalOptions.title!}
-      </DialogTitle>
+      <DialogTitle {...finalOptions.dialogTitleProps}>{finalOptions.title!}</DialogTitle>
       <DialogContent {...finalOptions.dialogContentProps}>
         {finalOptions?.description && (
           <DialogContentText {...finalOptions.dialogContentTextProps}>
@@ -86,21 +83,16 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         )}
       </DialogContent>
       <DialogActions {...finalOptions.dialogActionsProps}>
-        <Button
-          {...finalOptions.cancelButtonProps}
-          onClick={() => handleCancelOnClose(onCancel)}
-        >
-          {finalOptions?.cancelButtonText ||
-            defaultGlobalOptions.cancelButtonText}
+        <Button {...finalOptions.cancelButtonProps} onClick={() => handleCancelOnClose(onCancel)}>
+          {finalOptions?.cancelButtonText || defaultGlobalOptions.cancelButtonText}
         </Button>
         <LoadingButton
           {...finalOptions.confirmButtonProps}
-          onClick={confirm.execute}
+          onClick={handleConfrirm}
           disabled={isConfirmDisabled}
-          isLoading={confirm.loading}
+          isLoading={loading}
         >
-          {finalOptions?.confirmButtonText ||
-            defaultGlobalOptions.confirmButtonText}
+          {finalOptions?.confirmButtonText || defaultGlobalOptions.confirmButtonText}
         </LoadingButton>
       </DialogActions>
     </Dialog>
