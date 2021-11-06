@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonProps, CircularProgress } from '@material-ui/core';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 
 export const LoadingButton: React.FC<{
   isLoading?: boolean;

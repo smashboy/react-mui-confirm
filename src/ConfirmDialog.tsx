@@ -8,7 +8,7 @@ import {
   DialogContentText,
   TextField,
   LinearProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import { LoadingButton } from './LoadingButton';
 import { DialogProps } from './types';
 import { defaultGlobalOptions } from './defaultOptions';

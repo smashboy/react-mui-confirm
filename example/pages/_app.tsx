@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from '../theme';
 import { ConfirmDialogProvider } from '../../dist';
 

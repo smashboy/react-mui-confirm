@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { useConfirmDialog } from '../../dist';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 const Home = () => {
   const confirm = useConfirmDialog();
@@ -9,7 +9,6 @@ const Home = () => {
   const handleSimpleConfirm = () =>
     confirm({
       title: 'Are you sure you want to confirm this thingy?',
-      disableRejectOnCancel: true,
     });
 
   const handleConfirmText = () =>
@@ -21,14 +20,13 @@ const Home = () => {
         </>
       ),
       confirmText: 'THINGY',
-      disableRejectOnCancel: true,
       confirmTextFieldProps: {
         variant: 'outlined',
         color: 'primary',
         size: 'small',
       },
       cancelButtonProps: {
-        color: 'default',
+        color: 'inherit',
       },
     });
 
@@ -42,7 +40,7 @@ const Home = () => {
       },
     });
 
-  const simulateFetch = (rejectFetch?: boolean) =>
+  const simulateFetch = (rejectFetch?: boolean): Promise<string> =>
     new Promise((resolve, reject) => {
       setTimeout(() => {
         rejectFetch ? reject() : resolve('thingy');
@@ -53,10 +51,11 @@ const Home = () => {
     confirm({
       title: 'Are you sure you want to fetch this thingy?',
       onConfirm: async () => {
-        await simulateFetch();
+        const res = await simulateFetch();
+        console.log(res)
       },
       cancelButtonProps: {
-        color: 'default',
+        color: 'inherit',
       },
     });
 
@@ -67,8 +66,9 @@ const Home = () => {
         onConfirm: async () => {
           await simulateFetch(true);
         },
+        rejectOnCancel: true,
         cancelButtonProps: {
-          color: 'default',
+          color: 'inherit',
         },
       });
     } catch (error) {

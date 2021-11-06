@@ -7,21 +7,21 @@ import {
   DialogActionsProps,
   DialogContentProps,
   LinearProgressProps,
-} from '@material-ui/core';
+} from '@mui/material';
 
 export type GlobalOptions = {
   confirmButtonText?: string;
   cancelButtonText?: string;
-  disableRejectOnCancel?: boolean;
-  dialogProps?: Partial<MUIDialogProps>;
-  dialogTitleProps?: Partial<DialogTitleProps>;
-  dialogContentProps?: Partial<DialogContentProps>;
-  dialogContentTextProps?: Partial<DialogContentTextProps>;
-  dialogActionsProps?: Partial<DialogActionsProps>;
-  confirmTextFieldProps?: Partial<TextFieldProps>;
+  rejectOnCancel?: boolean;
+  dialogProps?: Omit<MUIDialogProps, "open" | "onClose">;
+  dialogTitleProps?: DialogTitleProps;
+  dialogContentProps?: DialogContentProps;
+  dialogContentTextProps?: DialogContentTextProps;
+  dialogActionsProps?: DialogActionsProps;
+  confirmTextFieldProps?: Omit<TextFieldProps, "onChange" | "value">;
   timerProgressProps?: Partial<LinearProgressProps>;
-  confirmButtonProps?: Partial<ButtonProps>;
-  cancelButtonProps?: Partial<ButtonProps>;
+  confirmButtonProps?: Omit<ButtonProps, "onClick" | "disabled">;
+  cancelButtonProps?: Omit<ButtonProps, "onClick">;
 };
 
 export type ConfirmOptions = GlobalOptions & {

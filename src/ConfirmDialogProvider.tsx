@@ -69,17 +69,14 @@ export const ConfirmDialogProvider: React.FC<GlobalOptions> = ({ children, ...gl
       handleResolveAndClear();
     } catch (error) {
       handleRejectAndClear(Boolean(finalOptions?.confirmText));
-      throw new Error(error);
+      throw new Error(JSON.stringify(error));
     }
   }, [handleResolveAndClear, handleRejectAndClear, finalOptions, handleStopTimer]);
 
   const handleCancel = React.useCallback(() => {
     handleStopTimer();
-    if (finalOptions?.disableRejectOnCancel) {
-      handleResolveAndClear();
-      return;
-    }
-    handleRejectAndClear();
+    if (finalOptions?.rejectOnCancel)  return handleRejectAndClear();
+     handleResolveAndClear();
   }, [handleResolveAndClear, handleRejectAndClear, finalOptions, handleStopTimer]);
 
   return (

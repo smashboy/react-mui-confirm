@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "1.0.0",
   "license": "MIT",
   "private": false,
   "author": {
@@ -38,8 +38,10 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "react": ">=16",
-    "@material-ui/core": ">=4.11"
+    "@emotion/react": ">=11",
+    "@emotion/styled": ">=11",
+    "@mui/material": ">=5.0.0",
+    "react": ">=16 || alpha"
   },
   "husky": {
     "hooks": {
@@ -55,7 +57,9 @@
   "name": "react-mui-confirm",
   "module": "dist/react-mui-confirm.esm.js",
   "devDependencies": {
-    "@material-ui/core": "^4.11.3",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/material": "^5.0.6",
     "@types/jest": "^26.0.22",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",

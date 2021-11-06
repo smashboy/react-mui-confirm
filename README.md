@@ -10,6 +10,18 @@ React Hooks based confirm dialog component built for [@material-ui/core](https:/
 
 [Codesandbox Demo](https://codesandbox.io/s/react-material-ui-confirm-examples-19c0i)
 
+## Requirements
+
+```sh
+// React
+>=16 || alpha
+
+// Material UI
+@emotion/react: >=11
+@emotion/styled: >=11
+@mui/material: >=5.0.0
+```
+
 ## Getting Started
 
 React-mui-confirm is available as an npm package.
@@ -84,18 +96,16 @@ export default Item;
 type GlobalOptions = {
   confirmButtonText?: string;
   cancelButtonText?: string;
-  disableRejectOnCancel?: boolean; 
-  // By default if user clicks cancel or if you use timer option and time runs out, confirm dialog will throw an error
-  // You can disable this behaviour by setting disableRejectOnCancel to TRUE
-  dialogProps?: Partial<MUIDialogProps>;
-  dialogTitleProps?: Partial<DialogTitleProps>;
-  dialogContentProps?: Partial<DialogContentProps>;
-  dialogContentTextProps?: Partial<DialogContentTextProps>;
-  dialogActionsProps?: Partial<DialogActionsProps>;
-  confirmTextFieldProps?: Partial<TextFieldProps>;
+  enableRejectOnCancel?: boolean;
+  dialogProps?: Omit<MUIDialogProps, "open" | "onClose">;
+  dialogTitleProps?: DialogTitleProps;
+  dialogContentProps?: DialogContentProps;
+  dialogContentTextProps?: DialogContentTextProps;
+  dialogActionsProps?: DialogActionsProps;
+  confirmTextFieldProps?: Omit<TextFieldProps, "onChange" | "value">;
   timerProgressProps?: Partial<LinearProgressProps>;
-  confirmButtonProps?: Partial<ButtonProps>;
-  cancelButtonProps?: Partial<ButtonProps>;
+  confirmButtonProps?: Omit<ButtonProps, "onClick" | "disabled">;
+  cancelButtonProps?: Omit<ButtonProps, "onClick">;
 };
 ```
 
