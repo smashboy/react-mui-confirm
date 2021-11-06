@@ -51,7 +51,6 @@
   "prettier": {
     "printWidth": 100,
     "semi": true,
-    "singleQuote": true,
     "trailingComma": "es5"
   },
   "name": "react-mui-confirm",
