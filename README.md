@@ -115,7 +115,7 @@ This hook returns the confirm function and doest not take any props.
 
 ### `confirm([ConfirmOptions]) => Promise`
 
-Confirm function can except `GlobalOptions`, but be aware they will override options from `ConfirmDialogProvider`.
+Confirm function can accept `GlobalOptions`, but be aware they will override options from `ConfirmDialogProvider`.
 
 ```ts
 type ConfirmOptions = GlobalOptions & {
