@@ -41,7 +41,7 @@
     "@emotion/react": ">=11",
     "@emotion/styled": ">=11",
     "@mui/material": ">=5.0.0",
-    "react": ">=16 || alpha"
+    "react": ">=16 || 18.0.0-rc.0"
   },
   "husky": {
     "hooks": {
@@ -63,8 +63,8 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "husky": "^6.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0-rc.0",
+    "react-dom": "^18.0.0-rc.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4"

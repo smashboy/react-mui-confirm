@@ -75,6 +75,7 @@ export const ConfirmDialog: React.FC<DialogProps> = ({
         )}
         {finalOptions?.confirmText && (
           <TextField
+            autoFocus
             fullWidth
             {...finalOptions.confirmTextFieldProps}
             onChange={handleConfirmInput}

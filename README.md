@@ -14,7 +14,7 @@ React Hooks based confirm dialog component built for [@material-ui/core](https:/
 
 ```sh
 // React
->=16 || alpha
+>=16 || 18.0.0-rc.0
 
 // Material UI
 @emotion/react: >=11
